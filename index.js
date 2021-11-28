@@ -22,7 +22,7 @@ const refreshDatabase = async () => {
 async function updateCryptoConversions(notionPages) {
   notionPages.map(async (page) => {
     const coinType =
-      page.properties.Crypto_ID.rich_text[0]?.text.content || "EMPTY";
+      page.properties.currency_id.rich_text[0]?.text.content || "EMPTY";
     if (coinType != "EMPTY") {
       const cryptoValue = await fetchPriceOnCoinGecko(
         coinType,
@@ -44,12 +44,6 @@ async function _updateNotionTable(pageId, monetaryValue) {
   });
 }
 
-/**
- * Get most recent price of any crypto listed at CoinGecko.
- * Params: (coin) - Crypto ID from CoinGecko, all crypto IDs can be found at:
- *                  https://api.coingecko.com/api/v3/coins/list?include_platform=false
- *         (defaultCurrency) - Base Currency Code to calculate price. Ex: USD, BRL, NZD
- **/
 async function fetchPriceOnCoinGecko(coin, defaultCurrency) {
   try {
     const response = await axios.get(
